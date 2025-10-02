@@ -1,0 +1,47 @@
+<nav class="bg-gray-900 dark:bg-gray-800 text-white h-14 flex items-center justify-between px-4 md:px-8 shadow-md">
+  <!-- Logo (hidden on small screens, visible on md+) -->
+  <div class="hidden md:flex items-center">
+    <img src="/turbovets-logo.svg" alt="TurboVets Logo" class="h-7 w-auto" />
+  </div>
+
+  <!-- Nav links -->
+  <div
+    class="flex-1 flex items-center justify-center space-x-6 text-sm font-medium"
+  >
+    <a
+      routerLink="/tickets"
+      routerLinkActive="text-blue-400 border-b-2 border-blue-400"
+      class="px-2 py-1 text-gray-300 hover:text-white transition-colors"
+    >
+      Tickets
+    </a>
+    <a
+      routerLink="/knowledgebase"
+      routerLinkActive="text-blue-400 border-b-2 border-blue-400"
+      class="px-2 py-1 text-gray-300 hover:text-white transition-colors"
+    >
+      Knowledgebase
+    </a>
+    <a
+      routerLink="/logs"
+      routerLinkActive="text-blue-400 border-b-2 border-blue-400"
+      class="px-2 py-1 text-gray-300 hover:text-white transition-colors"
+    >
+      Live Logs
+    </a>
+  </div>
+  
+  <!-- Dark mode toggle -->
+  <button
+    (click)="toggleDark()"
+    class="ml-4 w-8 h-8 flex items-center justify-center rounded-full bg-gray-700 hover:bg-gray-600 transition"
+    [title]="darkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'"
+  >
+    <!-- Show sun icon if darkMode=true -->
+    @if (darkMode) {
+      <span class="text-yellow-400">☀️</span>
+    } @else {
+      <span class="text-gray-200">🌙</span>
+    }
+  </button>
+</nav>

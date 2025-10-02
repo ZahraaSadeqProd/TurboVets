@@ -1,0 +1,82 @@
+<div class="space-y-4">
+  <!-- Filters -->
+  <div class="flex gap-2">
+    @for (status of statusOptions; track status) {
+      <button
+        (click)="selectedStatus = status"
+        class="px-3 py-1 md:px-4 md:py-2 rounded-md transition text-xs md:text-sm"
+        [class.bg-blue-600]="selectedStatus === status"
+        [class.text-white]="selectedStatus === status"
+        [class.bg-gray-200]="selectedStatus !== status"
+        [class.text-gray-800]="selectedStatus !== status"
+        [class.dark:bg-gray-700]="selectedStatus !== status"
+        [class.dark:text-gray-200]="selectedStatus !== status"
+      >
+        {{ status }}
+      </button>
+    }
+  </div>
+
+  <!-- Table -->
+  <div class="bg-white dark:bg-gray-700 shadow rounded-lg overflow-x-auto">
+    <table class="min-w-full text-xs md:text-sm text-gray-800 dark:text-gray-100">
+      <thead class="bg-gray-100 dark:bg-gray-600 text-gray-600 dark:text-gray-200">
+        <tr>
+          <th class="px-2 py-1 md:px-4 md:py-2 text-left">ID</th>
+          <th class="px-2 py-1 md:px-4 md:py-2 text-left">Subject</th>
+          <th class="px-2 py-1 md:px-4 md:py-2 text-left">Status</th>
+          <th class="px-2 py-1 md:px-4 md:py-2 text-left">Created At</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (ticket of filteredTickets; track ticket.id) {
+          <tr
+            class="border-b
+                   hover:bg-gray-50 hover:dark:bg-gray-700
+                   transition"
+          >
+            <td class="px-2 py-1 md:px-4 md:py-2">
+              {{ ticket.id }}
+            </td>
+            <td class="px-2 py-1 md:px-4 md:py-2">
+              {{ ticket.subject }}
+            </td>
+            <td class="px-2 py-1 md:px-4 md:py-2">
+              @if (ticket.status === 'Open') {
+                <span
+                  class="px-2 py-0.5 rounded-full text-[10px] md:text-xs
+                         bg-green-100 text-green-800
+                         dark:bg-green-900 dark:text-green-100"
+                >
+                  Open
+                </span>
+              } @else if (ticket.status === 'In Progress') {
+                <span
+                  class="px-2 py-0.5 rounded-full text-[10px] md:text-xs
+                         bg-yellow-100 text-yellow-800
+                         dark:bg-yellow-800 dark:text-yellow-100"
+                >
+                  In Progress
+                </span>
+              } @else {
+                <span
+                  class="px-2 py-0.5 rounded-full text-[10px] md:text-xs
+                         bg-gray-200 text-gray-800
+                         dark:bg-gray-500 dark:text-white"
+                >
+                  Closed
+                </span>
+              }
+            </td>
+            <td
+              class="px-2 py-1 md:px-4 md:py-2
+                     text-gray-500 dark:text-gray-400"
+            >
+              {{ ticket.createdAt }}
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>
