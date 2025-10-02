@@ -74,7 +74,6 @@ This should show a list of active emulators on your machine
 if there are none, make sure Android Studios is properly downloaded and configured
 e.g.
 ```bash
-S C:\Users\zsade\proj\TurboVets_Project\flutter_app> flutter emulator
 1 available emulator:
 
 Id                    • Name                  • Manufacturer • Platform
