@@ -1,5 +1,7 @@
-import 'package:flutter/material.dart';
+import 'dart:convert';
 import 'dart:async';
+import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Message {
   final String text;
@@ -7,6 +9,20 @@ class Message {
   final DateTime timestamp;
 
   Message({required this.text, required this.fromUser, required this.timestamp});
+
+  // Convert message to Map for storage
+  Map<String, dynamic> toMap() => {
+        'text': text,
+        'fromUser': fromUser,
+        'timestamp': timestamp.toIso8601String(),
+      };
+
+  // Construct from Map
+  factory Message.fromMap(Map<String, dynamic> map) => Message(
+        text: map['text'],
+        fromUser: map['fromUser'],
+        timestamp: DateTime.parse(map['timestamp']),
+      );
 }
 
 class ChatScreen extends StatefulWidget {
@@ -20,8 +36,35 @@ class _ChatScreenState extends State<ChatScreen> {
   final List<Message> _messages = [];
   final TextEditingController _controller = TextEditingController();
   final ScrollController _scrollController = ScrollController();
+  late SharedPreferences _prefs;
 
-  // Helper to scroll to bottom after sending message
+  @override
+  void initState() {
+    super.initState();
+    _loadMessages();
+  }
+
+  // ✅ Load from shared preferences
+  Future<void> _loadMessages() async {
+    _prefs = await SharedPreferences.getInstance();
+    final stored = _prefs.getStringList('messages') ?? [];
+    final loaded = stored
+        .map((msg) => Message.fromMap(jsonDecode(msg)))
+        .toList();
+    setState(() {
+      _messages.clear();
+      _messages.addAll(loaded);
+    });
+    _scrollToBottom();
+  }
+
+  // Save to shared preferences
+  Future<void> _saveMessages() async {
+    final encoded =
+        _messages.map((m) => jsonEncode(m.toMap())).toList();
+    await _prefs.setStringList('messages', encoded);
+  }
+
   void _scrollToBottom() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (_scrollController.hasClients) {
@@ -49,8 +92,9 @@ class _ChatScreenState extends State<ChatScreen> {
 
     _controller.clear();
     _scrollToBottom();
+    _saveMessages(); // Save after new message
 
-    // Fake agent reply after delay
+    // Fake agent reply
     Future.delayed(const Duration(seconds: 1), () {
       final reply = Message(
         text: "Agent reply to: \"$text\"",
@@ -63,6 +107,7 @@ class _ChatScreenState extends State<ChatScreen> {
       });
 
       _scrollToBottom();
+      _saveMessages(); // Save after reply too
     });
   }
 
@@ -110,7 +155,7 @@ class _ChatScreenState extends State<ChatScreen> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        // Chat messages
+        // Messages
         Expanded(
           child: ListView.builder(
             controller: _scrollController,
@@ -121,7 +166,7 @@ class _ChatScreenState extends State<ChatScreen> {
           ),
         ),
 
-        // Input bar
+        // Input
         SafeArea(
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
