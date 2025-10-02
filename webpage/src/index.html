@@ -1,11 +1,21 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <title>Webpage</title>
-  <base href="/">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <script>
+  (function() {
+    try {
+      const params = new URLSearchParams(location.search);
+      const q = params.get('theme'); // ?theme=dark
+      const saved = localStorage.getItem('darkMode');
+      const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const useDark = q === 'dark' || (q === null && saved === 'true') || (q === null && saved === null && prefersDark);
+      if (useDark) document.documentElement.classList.add('dark');
+      else document.documentElement.classList.remove('dark');
+    } catch (e) {}
+  })();
+  </script>
+
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <app-root></app-root>
