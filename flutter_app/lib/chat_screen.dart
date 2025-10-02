@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+// Data model for messages to map who sent what message (user vs agent)
 class Message {
   final String text;
   final bool fromUser;
@@ -26,10 +27,10 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
-  final List<Message> _messages = [];
-  final TextEditingController _controller = TextEditingController();
-  final ScrollController _scrollController = ScrollController();
-  late SharedPreferences _prefs;
+  final List<Message> _messages = []; // keep track of all chat messages on screen
+  final TextEditingController _controller = TextEditingController(); // manage bottom text inout field
+  final ScrollController _scrollController = ScrollController(); // scroll list programmatically
+  late SharedPreferences _prefs; // local storage
 
   @override
   void initState() {
@@ -37,6 +38,7 @@ class _ChatScreenState extends State<ChatScreen> {
     _loadMessages();
   }
 
+  // once app opened, retrieve stored JSON messages from local storage 
   Future<void> _loadMessages() async {
     _prefs = await SharedPreferences.getInstance();
     final stored = _prefs.getStringList('messages') ?? [];
@@ -48,6 +50,7 @@ class _ChatScreenState extends State<ChatScreen> {
     _scrollToBottom();
   }
 
+  // when there is new message/update store it
   Future<void> _saveMessages() async {
     final encoded = _messages.map((m) => jsonEncode(m.toMap())).toList();
     await _prefs.setStringList('messages', encoded);
