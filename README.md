@@ -90,7 +90,6 @@ You can find more information on managing emulators at the links below:
 
 Launch the Android Emulator:
 
-Now this command would launch the emulator you have configured in Android Studios
 ```bash
 flutter emulators --launch <emulator-id>
 ```
