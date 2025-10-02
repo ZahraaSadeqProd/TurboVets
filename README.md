@@ -72,7 +72,22 @@ flutter emulator
 ```
 This should show a list of active emulators on your machine
 if there are none, make sure Android Studios is properly downloaded and configured
+e.g.
+```bash
+S C:\Users\zsade\proj\TurboVets_Project\flutter_app> flutter emulator
+1 available emulator:
 
+Id                    • Name                  • Manufacturer • Platform
+
+Medium_Phone_API_36.1 • Medium Phone API 36.1 • Generic      • android
+
+To run an emulator, run 'flutter emulators --launch <emulator id>'.
+To create a new emulator, run 'flutter emulators --create [--name xyz]'.
+
+You can find more information on managing emulators at the links below:
+  https://developer.android.com/studio/run/managing-avds
+  https://developer.android.com/studio/command-line/avdmanager
+```
 
 Launch the Android Emulator:
 
@@ -80,14 +95,42 @@ Now this command would launch the emulator you have configured in Android Studio
 ```bash
 flutter emulators --launch <emulator-id>
 ```
+e.g.
+```bash
+flutter emulators --launch Medium_Phone_API_36.1
+```
 
 
 Run the app on Android Emulator:
 
 ```bash
 flutter devices
+```
+
+e.g.
+```bash
+Found 4 connected devices:
+  sdk gphone64 x86 64 (mobile) • emulator-5554 • android-x64    • Android 16 (API 36) (emulator)
+  Windows (desktop)            • windows       • windows-x64    • Microsoft Windows [Version 10.0.22631.5909]
+  Chrome (web)                 • chrome        • web-javascript • Google Chrome 140.0.7339.208
+  Edge (web)                   • edge          • web-javascript • Microsoft Edge 140.0.3485.54
+
+Run "flutter emulators" to list and start any available device emulators.
+
+If you expected another device to be detected, please run "flutter doctor" to diagnose potential issues. You may also
+try increasing the time to wait for connected devices with the "--device-timeout" flag. Visit
+https://flutter.dev/setup/ for troubleshooting tips.
+```
+
+Run the app on Emulator:
+```bash
 flutter run -d <emulator-id>
 ```
+e.g.
+```bash
+flutter run -d emulator-5554
+```
+
 
 # Features
 
